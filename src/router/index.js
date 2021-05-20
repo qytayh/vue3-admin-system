@@ -10,6 +10,7 @@ export const constantRoutes = [
     meta: {
       title: '首页',
       affix: true,
+      icon:'icon-home-fill'
     },
     children: [
       {
@@ -19,6 +20,70 @@ export const constantRoutes = [
         meta: {
           title: '首页',
           affix: true,
+          icon:'icon-home-fill'
+        },
+      },
+    ],
+  },
+  {
+    path: '/infoMan',
+    component: Layout,
+    name: 'infoMan',
+    redirect: '/infoMan/company',
+    meta: {
+      title: '信息管理',
+      icon: 'icon-template-fill',
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'company',
+        name: 'Company',
+        component: () => import('@/views/infoMan/company/index.vue'),
+        meta: {
+          title: '公司信息',
+          icon: 'icon-signboard-fill',
+        },
+      },
+      {
+        path: 'employee',
+        name: 'Employee',
+        component: () => import('@/views/infoMan/employee/index.vue'),
+        meta: {
+          title: '员工信息',
+          icon: 'icon-account-fill',
+        },
+      },
+    ],
+  },
+  {
+    path: '/contarctMan',
+    component: Layout,
+    name: 'contarctMan',
+    redirect: '/contarctMan/contract',
+    meta: {
+      title: '合同管理',
+      icon: 'icon-template-fill',
+      roles: ['admin', 'editor']
+    },
+    children: [
+      {
+        path: 'contarct',
+        name: 'Contract',
+        component: () => import('@/views/contarctMan/contarct/index.vue'),
+        meta: {
+          title: '合同',
+          icon: 'icon-signboard-fill',
+        },
+      },
+      {
+        path: 'contractDetail',
+        name: 'ContractDetail',
+        component: () => import('@/views/contarctMan/contractDetail/index.vue'),
+        meta: {
+          title: '合同详情',
+          icon: 'icon-account-fill',
+          hidden:true
         },
       },
     ],
@@ -50,62 +115,6 @@ export const constantRoutes = [
         meta: {
           title: '图标',
           icon: 'remixicon-line',
-        },
-      },
-    ],
-  },
-
-  
-
-  {
-    path: '/login',
-    name: 'login',
-    component: () => import('@/views/login/Login.vue'),
-    hidden: true,
-  },
-  // {
-  //   path: '/403',
-  //   name: '403',
-  //   component: () => import('@/views/error/403.vue'),
-  //   hidden: true,
-  // },
-  // {
-  //   path: '/404',
-  //   name: '404',
-  //   component: () => import('@/views/error/404.vue'),
-  //   hidden: true,
-  // },
-]
-
-export const asyncRoutes = [
-  
- 
-  {
-    path: '/error',
-    name: 'Error',
-    component: Layout,
-    redirect: '/error/403',
-    meta: {
-      title: '错误页',
-      icon: 'error-warning-line',
-    },
-    children: [
-      {
-        path: '403',
-        name: 'Error403',
-        component: () => import('@/views/error/403.vue'),
-        meta: {
-          title: '403',
-          icon: 'error-warning-line',
-        },
-      },
-      {
-        path: '404',
-        name: 'Error404',
-        component: () => import('@/views/error/404.vue'),
-        meta: {
-          title: '404',
-          icon: 'error-warning-line',
         },
       },
     ],
@@ -186,8 +195,45 @@ export const asyncRoutes = [
       }
     ]
 
-  }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/login/Login.vue'),
+  },
+  {
+    path: '/error',
+    name: 'Error',
+    component: Layout,
+    redirect: '/error/403',
+    meta: {
+      title: '错误页',
+      hidden: true,
+      icon: 'error-warning-line',
+    },
+    children: [
+      {
+        path: '403',
+        name: 'Error403',
+        component: () => import('@/views/error/403.vue'),
+        meta: {
+          title: '403',
+          icon: 'error-warning-line',
+        },
+      },
+      {
+        path: '404',
+        name: 'Error404',
+        component: () => import('@/views/error/404.vue'),
+        meta: {
+          title: '404',
+          icon: 'error-warning-line',
+        },
+      },
+    ],
+  },
 ]
+
 
 
 const router = createRouter({

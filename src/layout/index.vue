@@ -100,5 +100,6 @@ export default {
   .layout-content {
     flex: none;
   }
+  
 }
 </style>

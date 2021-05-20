@@ -6,7 +6,7 @@
     v-model:selectedKeys="selectedKeys"
     :inline-collapsed="collapsed"
   >
-    <template v-for="items in menus" :key="items.name">
+    <template v-for="items in menus.filter(v=>{return v.meta&&!v.meta.hidden})" :key="items.name">
       <!-- 存在children子菜单 -->
       <a-sub-menu
         v-if="items.children && items.children.length > 1"
@@ -20,18 +20,20 @@
         </template>
         <!-- 子菜单 -->
         <a-menu-item
-          v-for="item in items.children"
-          :key="item.name"
+          v-for="item in items.children.filter(v=>{return !v.meta.hidden})"
+          :key="item.name" 
           @click="clickMenuItem(item.name)"
         >
           <icon-font style="font-size: 24px" :type="item.meta.icon" />
           <span>{{ item.meta.title }}</span>
         </a-menu-item>
       </a-sub-menu>
-
       <!-- 单独菜单 -->
-      <a-menu-item v-else :key="items.name"
-       @click="clickMenuItem(items.name)">
+      <a-menu-item
+        v-else-if="items.children && items.children.length == 1"
+        :key="items.name"
+        @click="clickMenuItem(items.name)"
+      >
         <icon-font style="font-size: 24px" :type="items.meta.icon" />
         <span>{{ items.meta.title }}</span>
       </a-menu-item>
@@ -41,9 +43,8 @@
 
 <script>
 import IconFont from "@/assets/iconfont/icon";
-import {computed} from "vue"
-import {useStore} from "vuex"
-import {useRouter} from "vue-router";
+// import { useStore } from "vuex";
+import { useRouter } from "vue-router";
 export default {
   components: {
     IconFont,
@@ -54,26 +55,22 @@ export default {
       type: Boolean,
     },
   },
-
-  setup(){
-    const store = useStore()
-    const router = useRouter()
-    const menus = computed(()=> store.getters.menus)
-
-    const clickMenuItem = (key) =>{
-      if(router.hasRoute(key)){
-        router.push({name:key})
+  setup() {
+    const router = useRouter();
+    const clickMenuItem = (key) => {
+      if (router.hasRoute(key)) {
+        router.push({ name: key });
       } else {
-        router.push({name:'Error403'})
+        router.push({ name: "Error403" });
       }
-      
-    }
+    };
+    const menus = useRouter().options.routes;
 
     return {
       menus,
-      clickMenuItem
-    }
-  }
+      clickMenuItem,
+    };
+  },
 };
 </script>
 <style lang='less' scoped>

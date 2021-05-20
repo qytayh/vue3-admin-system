@@ -1,17 +1,16 @@
 import {Login,UserInfo} from '@/api/user'
-import router ,{asyncRoutes} from '@/router'
+import router from '@/router'
 
 
 const user = {
     namespaced: true,
     state:{
-        token:localStorage.getItem('token'),
+        token:sessionStorage.getItem('token'),
         avatar:'',
         username:'',
         roles:[],
-        menus:[]
+        // menus:[]
     },
-
     mutations:{
         SET_TOKEN:(state,token) =>{
             state.token = token
@@ -25,11 +24,10 @@ const user = {
         SET_ROLES: (state, roles) => {
             state.roles = roles
         },
-        SET_MENUS: (state, menus) => {
-            state.menus = menus
-        }
+        // SET_MENUS: (state, menus) => {
+        //     state.menus = menus
+        // }
     },
-
     actions:{
         /* login */
         LoginResult({commit}, userInfo) {
@@ -37,7 +35,7 @@ const user = {
                 Login(userInfo).then(response =>{
                     const {code ,token} = response.data
                     if(code == 200) {
-                        localStorage.setItem('token',token)
+                        sessionStorage.setItem('token',token)
                         commit('SET_TOKEN',token)
                     }
                     resolve(response.data)
@@ -58,7 +56,7 @@ const user = {
                         commit('SET_AVATAR',data.avatar)
                         commit('SET_USERNAME',data.username)
                         commit('SET_ROLES',data.roles)
-                        commit('SET_MENUS',data.menus)
+                        // commit('SET_MENUS',data.menus)
                         resolve(response.data)
                     }
                 
@@ -76,16 +74,16 @@ const user = {
             commit('SET_AVATAR','')
             commit('SET_USERNAME','')
             commit('SET_ROLES','')
-            commit('SET_MENUS','')
+            // commit('SET_MENUS','')
             const Routes = router.getRoutes()
             
             /* 清楚动态路由 */
-            asyncRoutes.forEach((item) => {
-                router.removeRoute(item.name)
-            })
+            // asyncRoutes.forEach((item) => {
+            //     router.removeRoute(item.name)
+            // })
             
             console.log(Routes)
-            localStorage.removeItem('token')
+            sessionStorage.removeItem('token')
         
         }
       

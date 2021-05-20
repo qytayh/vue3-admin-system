@@ -6,8 +6,8 @@
       <a-col :xs="24" :sm="24" :md="12" :lg="10" :xl="6">
         <div class="login-container-form">
           <header>
-            <img src="@/assets/images/logo.png" />
-            <h1>vue3-admin</h1>
+            <!-- <img src="@/assets/images/logo.png" /> -->
+            <h1>鱼总做账专用</h1>
           </header>
           <a-form :model="form" @submit="handleSubmit" @submit.prevent>
             <a-form-item>
@@ -31,7 +31,7 @@
             </a-form-item>
             <a-form-item>
               <a-button type="primary" size="large" @click="handleSubmit" block>
-                Login in
+                登录
               </a-button>
             </a-form-item>
           </a-form>
@@ -53,7 +53,6 @@ export default defineComponent({
     UserOutlined,
     LockOutlined,
   },
-
   setup() {
     const state = reactive({
       form: {
@@ -71,20 +70,10 @@ export default defineComponent({
       if (username.trim() == "" || password.trim() == "")
         return message.warning("用户名和密码不能为空");
       const res = await store.dispatch("user/LoginResult", state.form);
-
-      console.log(store.getters.token);
       if (res.code == 200) {
         const toPath = decodeURIComponent(route.query?.redirect || "/"); //获取登录成功后要跳转的路由。
         message.success("登录成功！");
         /* 获取用户信息 */
-        let tokenResult = localStorage.getItem("token");
-        console.log(tokenResult);
-        const result = await store.dispatch("user/GetInfo", tokenResult);
-        const { roles } = result.data;
-        const accessedRoutes = await store.dispatch("asyncRouter/generateRoutes", roles);
-        accessedRoutes.forEach((item) => {
-          router.addRoute(item);
-        });
         router.replace(toPath).then(() => {
           if (route.name == "login") {
             router.replace("/");
