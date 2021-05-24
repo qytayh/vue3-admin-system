@@ -3,9 +3,8 @@ import App from './App.vue'
 import router from './router/index'
 import {setupAntd} from './ant-design-vue'
 import store from './store'
-import '../mock/mock'
+// import '../mock/mock'
 import './permission'
-
 
 
 const  app = createApp(App)

@@ -33,12 +33,14 @@ const user = {
         LoginResult({commit}, userInfo) {
             return new Promise((resolve,reject) =>{
                 Login(userInfo).then(response =>{
-                    const {code ,token} = response.data
-                    if(code == 200) {
+                    console.log(response)
+                    const {code ,data} = response
+                    const {token} = data
+                    if(code == 1) {
                         sessionStorage.setItem('token',token)
                         commit('SET_TOKEN',token)
                     }
-                    resolve(response.data)
+                    resolve(response)
                 }).catch(error =>{
                     reject(error)
                 })
@@ -48,23 +50,31 @@ const user = {
         /* getUserInfo */
         GetInfo ({commit},token) {
             return new Promise((resolve,reject) => {
-                
-                UserInfo(token).then(response =>{
-                    const {code ,data} = response.data
-                    
-                    if(code == 200) {
-                        commit('SET_AVATAR',data.avatar)
-                        commit('SET_USERNAME',data.username)
-                        commit('SET_ROLES',data.roles)
-                        // commit('SET_MENUS',data.menus)
-                        resolve(response.data)
+                console.log(token,commit)
+                UserInfo({id:1}).then(res=>{
+                    console.log(res)
+                    resolve(res)
+                }).catch(err=>{
+                    {
+                        reject(err)
                     }
+                })
+                // UserInfo(token).then(response =>{
+                //     const {code ,data} = response.data
+                    
+                //     if(code == 200) {
+                //         commit('SET_AVATAR',data.avatar)
+                //         commit('SET_USERNAME',data.username)
+                //         commit('SET_ROLES',data.roles)
+                //         // commit('SET_MENUS',data.menus)
+                //         resolve(response.data)
+                //     }
                 
                     
                 
-                }).catch(error =>{
-                    reject(error)
-                })
+                // }).catch(error =>{
+                //     reject(error)
+                // })
             })
         },
 

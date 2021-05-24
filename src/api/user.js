@@ -1,20 +1,18 @@
 import instance from './request'
+const apiBase = 'employee/'
 
-
-export const Login = (res) =>{
+export const Login = (data) =>{
     return instance({
-        url:'/login',
+        url:apiBase+'login',
         method: 'POST',
-        data:res
-
+        data
     })
 } 
 
-export const UserInfo = (res) =>{
+export const UserInfo = (data) =>{
     return instance({
-        url:'/getInfo',
-        method: 'POST',
-        data:res
+        url:apiBase + data.id,
+        method: 'get',
     })
 }
 

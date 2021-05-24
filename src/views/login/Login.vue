@@ -12,19 +12,19 @@
           <a-form :model="form" @submit="handleSubmit" @submit.prevent>
             <a-form-item>
               <a-input
-                v-model:value="form.username"
+                v-model:value="form.name"
                 size="large"
-                placeholder="Username"
+                placeholder="用户名"
               >
                 <template v-slot:prefix><user-outlined type="user" /></template>
               </a-input>
             </a-form-item>
             <a-form-item>
               <a-input
-                v-model:value="form.password"
+                v-model:value="form.pwd"
                 size="large"
                 type="password"
-                placeholder="Password"
+                placeholder="密码"
               >
                 <template v-slot:prefix><lock-outlined type="user" /></template>
               </a-input>
@@ -56,8 +56,8 @@ export default defineComponent({
   setup() {
     const state = reactive({
       form: {
-        username: "",
-        password: "",
+        name: "",
+        pwd: "",
       },
     });
 
@@ -66,11 +66,11 @@ export default defineComponent({
     const route = useRoute();
 
     const handleSubmit = async () => {
-      const { username, password } = state.form;
-      if (username.trim() == "" || password.trim() == "")
-        return message.warning("用户名和密码不能为空");
+      const { name, pwd } = state.form;
+      if (name.trim() == "" || pwd.trim() == "")
+      return message.warning("用户名和密码不能为空");
       const res = await store.dispatch("user/LoginResult", state.form);
-      if (res.code == 200) {
+      if (res.code == 1) {
         const toPath = decodeURIComponent(route.query?.redirect || "/"); //获取登录成功后要跳转的路由。
         message.success("登录成功！");
         /* 获取用户信息 */
