@@ -86,7 +86,6 @@ const user = {
             commit('SET_ROLES','')
             // commit('SET_MENUS','')
             const Routes = router.getRoutes()
-            
             /* 清楚动态路由 */
             // asyncRoutes.forEach((item) => {
             //     router.removeRoute(item.name)

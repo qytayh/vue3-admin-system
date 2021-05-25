@@ -2,7 +2,7 @@
 <template>
   <div class="tabs-content">
     <div class="title">
-     {{visitedRoutes.name}}
+      {{ visitedRoutes.name }}
     </div>
     <div class="views">
       <router-view></router-view>
@@ -19,8 +19,8 @@ export default {
     const state = reactive({
       activeKey: route.fullPath,
       visitedRoutes: {
-        fullPath:route.fullPath,
-        name:route.meta.title
+        fullPath: route.fullPath,
+        name: route.meta.title,
       },
     });
 
@@ -29,8 +29,8 @@ export default {
       (to) => {
         if (state.visitedRoutes.fullPath !== to) {
           const { fullPath, meta, path } = route;
-          const routes = { fullPath, name:meta.title, path };
-          state.visitedRoutes=routes;
+          const routes = { fullPath, name: meta.title, path };
+          state.visitedRoutes = routes;
           state.activeKey = to;
         } else {
           state.activeKey = to;
@@ -52,8 +52,7 @@ export default {
 </script>
 <style lang='less' scoped>
 .tabs-content {
-  
-  .title{
+  .title {
     height: 30px;
     line-height: 30px;
     font-size: 20px;
@@ -61,8 +60,11 @@ export default {
     padding-left: 20px;
   }
   border-top: 1px solid #eee;
-  .views{
+  .views {
     margin: 5px 8px;
+    background: #fff;
+    padding: 10px 10px;
+    border-radius: 5px;
     height: 100%;
   }
 }

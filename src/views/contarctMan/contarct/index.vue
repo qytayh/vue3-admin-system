@@ -119,10 +119,7 @@ export default defineComponent({
 
 <style lang='less' scoped>
 .contractDetail {
-  background: #fff;
   min-width: 800px;
-  padding: 10px;
-  border-radius: 5px;
   .add {
     float: right;
     margin-top: 3px;
