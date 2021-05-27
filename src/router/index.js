@@ -33,7 +33,6 @@ export const constantRoutes = [
     meta: {
       title: '信息管理',
       icon: 'icon-template-fill',
-      roles: ['admin', 'editor']
     },
     children: [
       {
@@ -62,7 +61,7 @@ export const constantRoutes = [
     name: 'contarctMan',
     redirect: '/contarctMan/contract',
     meta: {
-      title: '合同管理',
+      title: '项目管理',
       icon: 'icon-template-fill',
       roles: ['admin', 'editor']
     },
@@ -72,7 +71,7 @@ export const constantRoutes = [
         name: 'Contract',
         component: () => import('@/views/contarctMan/contarct/index.vue'),
         meta: {
-          title: '合同',
+          title: '项目',
           icon: 'icon-signboard-fill',
         },
       },
@@ -81,7 +80,7 @@ export const constantRoutes = [
         name: 'ContractDetail',
         component: () => import('@/views/contarctMan/contractDetail/index.vue'),
         meta: {
-          title: '合同详情',
+          title: '项目详情',
           icon: 'icon-account-fill',
           hidden:true
         },

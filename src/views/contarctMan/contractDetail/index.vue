@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>xiang</div>
 </template>
 
 <script>

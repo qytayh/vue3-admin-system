@@ -50,12 +50,7 @@ export default {
 
     onBeforeMount(async () =>{
       const List = await GetIconList()
-     
-      
-      
-      
      state.iconList = List.data.data
-     console.log(state.iconList)
     })
 
     const queryData = (val)=>{

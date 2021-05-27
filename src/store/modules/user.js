@@ -1,5 +1,5 @@
-import {Login,UserInfo} from '@/api/user'
-import router from '@/router'
+import {Login} from '@/api/user'
+// import router from '@/router'
 
 
 const user = {
@@ -8,7 +8,6 @@ const user = {
         token:sessionStorage.getItem('token'),
         avatar:'',
         username:'',
-        roles:[],
         // menus:[]
     },
     mutations:{
@@ -21,9 +20,6 @@ const user = {
         SET_USERNAME:(state,username) =>{
             state.username = username
         },
-        SET_ROLES: (state, roles) => {
-            state.roles = roles
-        },
         // SET_MENUS: (state, menus) => {
         //     state.menus = menus
         // }
@@ -33,7 +29,6 @@ const user = {
         LoginResult({commit}, userInfo) {
             return new Promise((resolve,reject) =>{
                 Login(userInfo).then(response =>{
-                    console.log(response)
                     const {code ,data} = response
                     const {token} = data
                     if(code == 1) {
@@ -47,51 +42,20 @@ const user = {
             })
         },
 
-        /* getUserInfo */
-        GetInfo ({commit},token) {
-            return new Promise((resolve,reject) => {
-                console.log(token,commit)
-                UserInfo({id:1}).then(res=>{
-                    console.log(res)
-                    resolve(res)
-                }).catch(err=>{
-                    {
-                        reject(err)
-                    }
-                })
-                // UserInfo(token).then(response =>{
-                //     const {code ,data} = response.data
-                    
-                //     if(code == 200) {
-                //         commit('SET_AVATAR',data.avatar)
-                //         commit('SET_USERNAME',data.username)
-                //         commit('SET_ROLES',data.roles)
-                //         // commit('SET_MENUS',data.menus)
-                //         resolve(response.data)
-                //     }
-                
-                    
-                
-                // }).catch(error =>{
-                //     reject(error)
-                // })
-            })
-        },
+       
 
         /* 用户登出 */
         LogoutResult({commit}) {
             commit('SET_TOKEN','')
             commit('SET_AVATAR','')
             commit('SET_USERNAME','')
-            commit('SET_ROLES','')
             // commit('SET_MENUS','')
-            const Routes = router.getRoutes()
+            // const Routes = router.getRoutes()
             /* 清楚动态路由 */
             // asyncRoutes.forEach((item) => {
             //     router.removeRoute(item.name)
             // })
             
-            console.log(Routes)
             sessionStorage.removeItem('token')
         
         }

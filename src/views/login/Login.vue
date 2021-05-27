@@ -7,12 +7,12 @@
         <div class="login-container-form">
           <header>
             <!-- <img src="@/assets/images/logo.png" /> -->
-            <h1>鱼总做账专用</h1>
+            <h1>后台管理</h1>
           </header>
           <a-form :model="form" @submit="handleSubmit" @submit.prevent>
             <a-form-item>
               <a-input
-                v-model:value="form.name"
+                v-model:value="form.tel"
                 size="large"
                 placeholder="用户名"
               >
@@ -56,7 +56,7 @@ export default defineComponent({
   setup() {
     const state = reactive({
       form: {
-        name: "",
+        tel: "",
         pwd: "",
       },
     });
@@ -66,8 +66,8 @@ export default defineComponent({
     const route = useRoute();
 
     const handleSubmit = async () => {
-      const { name, pwd } = state.form;
-      if (name.trim() == "" || pwd.trim() == "")
+      const { tel, pwd } = state.form;
+      if (tel.trim() == "" || pwd.trim() == "")
       return message.warning("用户名和密码不能为空");
       const res = await store.dispatch("user/LoginResult", state.form);
       if (res.code == 1) {
@@ -75,7 +75,7 @@ export default defineComponent({
         message.success("登录成功！");
         /* 获取用户信息 */
         router.replace(toPath).then(() => {
-          if (route.name == "login") {
+          if (route.tel == "login") {
             router.replace("/");
           }
         });

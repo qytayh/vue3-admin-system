@@ -1,69 +1,87 @@
 <template>
   <div class="contractDetail">
-    <div class="tools">
       <a-form
         layout="inline"
         :form="form"
         @submit="handleSubmit"
         @submit.prevent
       >
-        <a-form-item label="公司名">
-          <a-input v-model:value="form.companyName"> </a-input>
-        </a-form-item>
-        <a-form-item label="负责人">
-          <a-input v-model:value="form.employeeName"> </a-input>
+        <a-form-item label="工程名称">
+          <a-input v-model:value="form.project"> </a-input>
         </a-form-item>
         <a-form-item label="时间范围">
           <a-range-picker v-model:value="form.date"></a-range-picker>
         </a-form-item>
         <a-form-item>
-          <a-button type="primary" html-type="submit"> 查询 </a-button>
+          <a-button type="primary" html-type="submit" @click="queryList">
+            查询
+          </a-button>
+          <a-button @click="reset" style="margin-left: 15px"> 重置 </a-button>
         </a-form-item>
         <a-button class="add" @click="goAdd"> 新增 </a-button>
       </a-form>
-    </div>
-    <div class="table">
-      <a-table
-        :columns="columns"
-        :dataSource="data"
-        bordered
-        :pagination="pagination"
-      >
-        <template #operation="{ record }">
-          <a-button type="link" @click="detail(record)">详情</a-button>
-          <a-button type="link" @click="del(record)">删除</a-button>
-        </template>
-      </a-table>
-    </div>
+    <a-table
+      class="table"
+      size="small"
+      :columns="columns"
+      :dataSource="tableData"
+      bordered
+      :pagination="pagination"
+    >
+      <template #operation="{ record }">
+        <a-button type="link" @click="detail(record)">详情</a-button>
+        <a-button type="link" @click="del(record)">删除</a-button>
+      </template>
+    </a-table>
+     <a-modal
+      v-model:visible="dialogs.visible"
+      title="创建工程"
+      @ok="handleOk"
+      width="400px"
+      okText="确定"
+      cancelText="取消"
+    >
+      <a-form :labelCol="{ span: 6 }" :wrapperCol="{ span: 16 }">
+        <a-form-item ref="project" label="工程名称" name="project">
+          <a-input v-model:value="dialogs.models.project" />
+        </a-form-item>
+        <a-form-item ref="note" label="备注" name="note">
+          <a-textarea v-model:value="dialogs.models.note" />
+        </a-form-item>
+      </a-form>
+    </a-modal>
   </div>
 </template>
 
 <script>
-import { defineComponent, reactive, toRefs } from "vue";
+import { defineComponent, onMounted, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
+import { projectList,projectAdd,projectDel } from "@/api/project";
+import { dateFormat } from "@/utils/format";
+import { message,Modal } from "ant-design-vue";
 
 const columns = [
   {
-    title: "name",
-    dataIndex: "name",
-    width: "25%",
-    slots: { customRender: "name" },
+    title: "工程名称",
+    dataIndex: "project",
+
+    slots: { customRender: "project" },
   },
   {
-    title: "age",
-    dataIndex: "age",
-    width: "15%",
-    slots: { customRender: "age" },
+    title: "备注",
+    dataIndex: "note",
+    slots: { customRender: "note" },
   },
   {
-    title: "address",
-    dataIndex: "address",
-    width: "40%",
-    slots: { customRender: "address" },
+    title: "时间",
+    width: "200px",
+    dataIndex: "createdAt",
+    slots: { customRender: "createdAt" },
   },
   {
-    title: "operation",
+    title: "操作",
     dataIndex: "operation",
+    width: "200px",
     slots: { customRender: "operation" },
   },
 ];
@@ -72,46 +90,94 @@ const pagination = {
   showTotal: (total) => `共 ${total} 条数据`,
 };
 
-const data = [];
-for (let i = 0; i < 100; i++) {
-  data.push({
-    key: i.toString(),
-    name: `Edrward ${i}`,
-    age: 32,
-    address: `London Park no. ${i}`,
-  });
-}
 export default defineComponent({
   setup() {
     const router = useRouter();
     const state = reactive({
       form: {
-        companyName: "",
-        employeeName: "",
-        date: "",
+        project: "",
+        date: [],
       },
+      dialogs: {
+        visible: false,
+        models: {
+          project: "",
+          note: "",
+        },
+      },
+      tableData: [],
     });
-    const handleSubmit = () => {
-      //   const { companyName, employeeName, date } = state.form;
-    };
+    const handleSubmit = () => {};
     const goAdd = () => {
-      router.push("/contarctMan/contractDetail");
+      state.dialogs = {
+        visible: true,
+        models: {
+          project: "",
+          note: "",
+        },
+      };
     };
-    const detail = (val) => {
-      console.log(val);
+    const detail = ({ id }) => {
+      router.push({ path: "/contarctMan/contractDetail", query: { id } });
     };
     const del = (val) => {
-      console.log(val);
+      Modal.confirm({
+        title: '系统提示',
+        content: `请确认是否删除${val.project}!!!`,
+        okText:"确定",
+        cancelText:"取消",
+        onOk() {
+          projectDel({ id: val.id }).then((res) => {
+            if (res.code) {
+              message.success("删除成功！");
+            } else {
+              message.success("删除失败！");
+            }
+            queryList();
+          });
+        },
+        onCancel() {},
+      });
     };
+    const queryList = () => {
+      projectList(state.form).then((res) => {
+        res.data.forEach((item) => {
+          item.createdAt = dateFormat("yyyy-MM-dd", new Date(item.createdAt));
+        });
+        state.tableData = res.data;
+      });
+    };
+    const reset =()=>{
+      state.form = {
+        project: "",
+        date: [],
+      };
+    }
+    const handleOk = ()=>{
+      projectAdd(state.dialogs.models).then(res=>{
+        if (res.code == 1) {
+            message.success("创建成功！");
+            state.dialogs.visible = false;
+            queryList();
+          } else {
+            message.error("创建失败");
+          }
+      })
+    }
+    onMounted(() => {
+      queryList();
+    });
     return {
       ...toRefs(state),
       handleSubmit,
       goAdd,
-      data,
       columns,
       pagination,
       detail,
+      queryList,
+      reset,
       del,
+      handleOk
     };
   },
 });
