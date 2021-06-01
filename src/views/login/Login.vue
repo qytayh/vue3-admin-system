@@ -25,6 +25,7 @@
                 size="large"
                 type="password"
                 placeholder="密码"
+                :pressEnter="handleSubmit"
               >
                 <template v-slot:prefix><lock-outlined type="user" /></template>
               </a-input>

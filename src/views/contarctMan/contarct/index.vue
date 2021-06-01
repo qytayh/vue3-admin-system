@@ -1,25 +1,18 @@
 <template>
-  <div class="contractDetail">
-      <a-form
-        layout="inline"
-        :form="form"
-        @submit="handleSubmit"
-        @submit.prevent
-      >
-        <a-form-item label="工程名称">
-          <a-input v-model:value="form.project"> </a-input>
-        </a-form-item>
-        <a-form-item label="时间范围">
-          <a-range-picker v-model:value="form.date"></a-range-picker>
-        </a-form-item>
-        <a-form-item>
-          <a-button type="primary" html-type="submit" @click="queryList">
-            查询
-          </a-button>
-          <a-button @click="reset" style="margin-left: 15px"> 重置 </a-button>
-        </a-form-item>
-        <a-button class="add" @click="goAdd"> 新增 </a-button>
-      </a-form>
+  <div class="contractList">
+    <a-form layout="inline" :form="form">
+      <a-form-item label="工程名称">
+        <a-input v-model:value="form.project"> </a-input>
+      </a-form-item>
+      <a-form-item label="时间范围">
+        <a-range-picker v-model:value="form.date"></a-range-picker>
+      </a-form-item>
+      <a-form-item>
+        <a-button type="primary" html-type="submit" @click="queryList"> 查询 </a-button>
+        <a-button @click="reset" style="margin-left: 15px"> 重置 </a-button>
+      </a-form-item>
+      <a-button class="add" @click="goAdd"> 新增 </a-button>
+    </a-form>
     <a-table
       class="table"
       size="small"
@@ -33,7 +26,7 @@
         <a-button type="link" @click="del(record)">删除</a-button>
       </template>
     </a-table>
-     <a-modal
+    <a-modal
       v-model:visible="dialogs.visible"
       title="创建工程"
       @ok="handleOk"
@@ -56,9 +49,9 @@
 <script>
 import { defineComponent, onMounted, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
-import { projectList,projectAdd,projectDel } from "@/api/project";
+import { projectList, projectAdd, projectDel } from "@/api/project";
 import { dateFormat } from "@/utils/format";
-import { message,Modal } from "ant-design-vue";
+import { message, Modal } from "ant-design-vue";
 
 const columns = [
   {
@@ -107,7 +100,6 @@ export default defineComponent({
       },
       tableData: [],
     });
-    const handleSubmit = () => {};
     const goAdd = () => {
       state.dialogs = {
         visible: true,
@@ -122,10 +114,10 @@ export default defineComponent({
     };
     const del = (val) => {
       Modal.confirm({
-        title: '系统提示',
+        title: "系统提示",
         content: `请确认是否删除${val.project}!!!`,
-        okText:"确定",
-        cancelText:"取消",
+        okText: "确定",
+        cancelText: "取消",
         onOk() {
           projectDel({ id: val.id }).then((res) => {
             if (res.code) {
@@ -147,29 +139,28 @@ export default defineComponent({
         state.tableData = res.data;
       });
     };
-    const reset =()=>{
+    const reset = () => {
       state.form = {
         project: "",
         date: [],
       };
-    }
-    const handleOk = ()=>{
-      projectAdd(state.dialogs.models).then(res=>{
+    };
+    const handleOk = () => {
+      projectAdd(state.dialogs.models).then((res) => {
         if (res.code == 1) {
-            message.success("创建成功！");
-            state.dialogs.visible = false;
-            queryList();
-          } else {
-            message.error("创建失败");
-          }
-      })
-    }
+          message.success("创建成功！");
+          state.dialogs.visible = false;
+          queryList();
+        } else {
+          message.error("创建失败");
+        }
+      });
+    };
     onMounted(() => {
       queryList();
     });
     return {
       ...toRefs(state),
-      handleSubmit,
       goAdd,
       columns,
       pagination,
@@ -177,14 +168,14 @@ export default defineComponent({
       queryList,
       reset,
       del,
-      handleOk
+      handleOk,
     };
   },
 });
 </script>
 
-<style lang='less' scoped>
-.contractDetail {
+<style lang="less" scoped>
+.contractList {
   min-width: 800px;
   .add {
     float: right;
