@@ -19,8 +19,6 @@
         <div class="icon-img">
           <icon-font style="font-size: 36px" :type="item.font_class" />
         </div>
-          
-        
         <div class="icon-text" @click="handleCopyText(item, $event)">
           {{ item.name }}
         </div>
@@ -32,8 +30,9 @@
 
 <script>
 import IconFont from "@/assets/iconfont/icon";
-import {GetIconList} from '@/api/icon'
-import {reactive,toRefs,onBeforeMount} from "vue"
+// import {GetIconList} from '@/api/icon'
+import {data} from '@/utils/icon'
+import {reactive,toRefs} from "vue"
 export default {
   components:{
     IconFont
@@ -41,17 +40,17 @@ export default {
 
   setup() {
     const state = reactive({
-      iconList:[],
+      iconList:data,
       iconForm:{
         name:'',
         font_class:''
       }
     })
 
-    onBeforeMount(async () =>{
-      const List = await GetIconList()
-     state.iconList = List.data.data
-    })
+    // onBeforeMount(() =>{
+      
+    //  state.iconList = data
+    // })
 
     const queryData = (val)=>{
      state.iconForm.name = val

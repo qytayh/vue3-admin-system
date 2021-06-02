@@ -62,6 +62,14 @@ export const contentAdd = (data) => {
   });
 };
 
+export const contractorList = (data) => {
+  return instance({
+    url: apiBase + "contractor",
+    method: "GET",
+    data,
+  });
+}
+
 export default {
   projectList,
   projectAdd,
@@ -70,5 +78,6 @@ export default {
   projectGet,
   contentDel,
   contentEdit,
-  contentAdd
+  contentAdd,
+  contractorList
 };

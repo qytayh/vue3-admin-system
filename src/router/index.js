@@ -62,8 +62,7 @@ export const constantRoutes = [
     redirect: '/contarctMan/contract',
     meta: {
       title: '项目管理',
-      icon: 'icon-template-fill',
-      roles: ['admin', 'editor']
+      icon: 'icon-feeds'
     },
     children: [
       {
@@ -71,8 +70,17 @@ export const constantRoutes = [
         name: 'Contract',
         component: () => import('@/views/contarctMan/contarct/index.vue'),
         meta: {
-          title: '项目',
-          icon: 'icon-signboard-fill',
+          title: '按项目',
+          icon: 'icon-integral',
+        },
+      },
+      {
+        path: 'contarctor',
+        name: 'Contractor',
+        component: () => import('@/views/contarctMan/contarctor/index.vue'),
+        meta: {
+          title: '负责人',
+          icon: 'icon-bussiness-man',
         },
       },
       {
@@ -81,7 +89,15 @@ export const constantRoutes = [
         component: () => import('@/views/contarctMan/contractDetail/index.vue'),
         meta: {
           title: '项目详情',
-          icon: 'icon-account-fill',
+          hidden:true
+        },
+      },
+      {
+        path: 'contractorDetail',
+        name: 'contractorDetail',
+        component: () => import('@/views/contarctMan/contractorDetail/index.vue'),
+        meta: {
+          title: '项目人详情',
           hidden:true
         },
       },

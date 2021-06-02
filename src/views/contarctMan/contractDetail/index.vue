@@ -11,6 +11,10 @@
         <span>时间</span>
         <div><a-date-picker v-model:value="project.createdAt" :disabled="!edit" /></div>
       </a-col>
+      <a-col :span="8">
+        <span>工程总价</span>
+        <a-input v-model:value="totalPrice" disabled />
+      </a-col>
       <a-col :span="16">
         <span>备注</span><a-input v-model:value="project.note" :disabled="!edit" />
       </a-col>
@@ -204,6 +208,7 @@ export default defineComponent({
       edit: false,
       project: {},
       content: [],
+      totalPrice:'',
       dialogs: {
         visible: false,
         models: {},
@@ -217,9 +222,12 @@ export default defineComponent({
           project,
           createdAt,
         };
+        let total = 0
         res.data.content.forEach((item) => {
+          total= total+item.totalPrice
           item.invoiceDateText = dateFormat("yyyy-MM-dd", new Date(item.invoiceDate));
         });
+        state.totalPrice=total
         state.content = res.data.content;
       });
     };

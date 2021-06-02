@@ -1,5 +1,5 @@
 
- const data = [
+export const data = [
   {
     "icon_id": "11770409",
     "name": "bilibili",
@@ -3726,4 +3726,4 @@
   }
 ]
 
-export default data
+export default {data}
