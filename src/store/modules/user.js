@@ -30,8 +30,8 @@ const user = {
             return new Promise((resolve,reject) =>{
                 Login(userInfo).then(response =>{
                     const {code ,data} = response
-                    const {token} = data
                     if(code == 1) {
+                        const {token} = data
                         sessionStorage.setItem('token',token)
                         commit('SET_TOKEN',token)
                     }
@@ -55,7 +55,6 @@ const user = {
             // asyncRoutes.forEach((item) => {
             //     router.removeRoute(item.name)
             // })
-            
             sessionStorage.removeItem('token')
         
         }
